@@ -81,7 +81,7 @@ header a{
 /* thumbail */
 .thumbnail{
     position: absolute;
-    bottom: 50px;
+    bottom: 20px;
     left: 50%;
     width: max-content;
     z-index: 100;
@@ -90,7 +90,7 @@ header a{
 }
 .thumbnail .item{
     width: 150px;
-    height: 220px;
+    height: 170px;
     flex-shrink: 0;
     position: relative;
 }
@@ -117,24 +117,31 @@ header a{
 .arrows{
     position: absolute;
     top: 80%;
-    right: 52%;
+    left: 2%;
     z-index: 100;
-    width: 300px;
-    max-width: 30%;
-    display: flex;
-    gap: 10px;
-    align-items: center;
+    width: 200px;
+    max-width: 60%;
+    align-items: left;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    column-gap: 0%;
+    row-gap: 2%;
 }
 .arrows button{
-    width: 40px;
+    width: 30px;
     height: 40px;
-    border-radius: 50%;
-    background-color: #eee4;
     border: none;
-    color: #fff;
-    font-family: monospace;
     font-weight: bold;
     transition: .5s;
+    font-size: 1.6em;
+    display: block;
+    width: 88%;
+    background: #FFD700;
+    color: #000000;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: 600;
+    text-decoration: none;
 }
 .arrows button:hover{
     background-color: #fff;
@@ -309,18 +316,6 @@ header a{
     border-radius: 5px;
 }
 
-/* New slide button styling */
-.arrows button.slide-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: rgba(255,255,255,0.3);
-    font-size: 14px;
-}
-.arrows button.slide-btn:hover {
-    background-color: #fff;
-    color: #000;
-}
 
 
 .banner .content{

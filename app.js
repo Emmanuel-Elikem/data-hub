@@ -1,6 +1,4 @@
 // Replace your entire app.js with this
-let nextDom = document.getElementById('next');
-let prevDom = document.getElementById('prev');
 let carouselDom = document.querySelector('.carousel');
 let SliderDom = carouselDom.querySelector('.carousel .list');
 let thumbnailBorderDom = document.querySelector('.carousel .thumbnail');
@@ -8,9 +6,6 @@ let thumbnailItemsDom = thumbnailBorderDom.querySelectorAll('.item');
 
 thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
 
-// Next/Prev functionality
-nextDom.onclick = () => showSlider('next');
-prevDom.onclick = () => showSlider('prev');
 
 document.addEventListener("DOMContentLoaded", function() {
     // --- AJAX Call to Load External HTML ---
