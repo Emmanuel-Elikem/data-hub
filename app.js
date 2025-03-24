@@ -1,45 +1,48 @@
-// Replace your entire app.js with this
 let carouselDom = document.querySelector('.carousel');
 let SliderDom = carouselDom.querySelector('.carousel .list');
 let thumbnailBorderDom = document.querySelector('.carousel .thumbnail');
 let thumbnailItemsDom = thumbnailBorderDom.querySelectorAll('.item');
 
-thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
+// Remove initial thumbnail reordering (delete this line)
+// thumbnailBorderDom.appendChild(thumbnailItemsDom[0]); 
 
-
-document.addEventListener("DOMContentLoaded", function() {
-    // --- AJAX Call to Load External HTML ---
-    fetch('rotating.html')
-      .then(response => response.text())
-      .then(html => {
-        // Insert the external HTML into the container
-        document.getElementById('rotating-container').innerHTML = html;
-      })
-      .catch(error => console.error('Error loading rotating.html:', error));
-});
-
-// Direct slide buttons
 document.querySelectorAll('.slide-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
         const targetIndex = parseInt(btn.dataset.index);
         const currentIndex = getCurrentSlideIndex();
         
         if(targetIndex === currentIndex) return;
         
-        const steps = (targetIndex > currentIndex) 
-            ? targetIndex - currentIndex 
-            : (4 - currentIndex) + targetIndex;
+        const totalSlides = 4;
+        let direction;
+        let steps;
         
+        // Calculate shortest path
+        const forwardSteps = (targetIndex - currentIndex + totalSlides) % totalSlides;
+        const backwardSteps = (currentIndex - targetIndex + totalSlides) % totalSlides;
+        
+        if(forwardSteps <= backwardSteps) {
+            direction = 'next';
+            steps = forwardSteps;
+        } else {
+            direction = 'prev';
+            steps = backwardSteps;
+        }
+        
+        // Animate each step with proper delays
         for(let i = 0; i < steps; i++) {
-            setTimeout(() => showSlider('next'), i * 300);
+            await new Promise(resolve => {
+                showSlider(direction);
+                setTimeout(resolve, 300); // Wait for animation
+            });
         }
     });
 });
 
 function getCurrentSlideIndex() {
-    const firstSlideImg = SliderDom.querySelector('.item:first-child img').src;
+    const activeSlideImg = SliderDom.querySelector('.item:first-child img').src;
     return Array.from(thumbnailItemsDom).findIndex(
-        thumb => thumb.querySelector('img').src === firstSlideImg
+        thumb => thumb.querySelector('img').src === activeSlideImg
     );
 }
 
@@ -61,4 +64,3 @@ function showSlider(type) {
         carouselDom.classList.remove('next', 'prev');
     }, 300);
 }
-

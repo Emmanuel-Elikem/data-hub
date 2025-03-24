@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,26 +8,19 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="data offer.css">
   <link href="https://storyset.com/online">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     /* Add transition for smooth slide changes */
     .carousel .list .item {
       transition: transform 0.3s ease-in-out;
     }
-    /* Style the iframe container so that it overlays the background image */
-    /*.iframe-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      pointer-events: auto;
-    }*/
+
     .iframe-container iframe {
       width: 100%;
       height: 260px;
       border: none;
     }
+
   </style>
 </head>
 <body>
@@ -42,7 +36,6 @@
   <div class="carousel">
     <!-- list item -->
     <div class="list">
-      <!-- First slide with iframe -->
       <div class="item">
         <img src="image/mtn-bg.jpg">
         <div class="content">
@@ -53,23 +46,17 @@
             <div class="bar-container">
                 <div class="bar-content">
                     <span class="call-to-action">
-                        <!-- Choose one of these text options -->
-                        📲 Padi, grap that data deal wey go make you smile!<br>
-                        <!-- 📦 Which data plan you wan buy? -->
-                        <!-- 💰 Cheap-cheap data for all my padis! -->
-                        <!-- 🌐 Data deals wey go make you happy! -->
-                        <!-- ⚡ Quick-quick, select your data! -->
-                        <!-- 🙌 Best data prices for my people! -->
+                     <i class="fa-solid fa-cart-plus cart-icon"></i> Padi, grap that data deal wey go make you smile!<br>
                     </span>
                 </div>
             </div>
-        </nav>    
-          <img src="image/mtn-img.svg">
-          </div>
+         </nav>    
+          <img src="image/mtn-img.svg" class="svg-icon">
+        </div>
         <!-- The iframe loads the external rotating content -->
       </div>
       <div class="item">
-        <img src="image/img2.jpg">
+        <img src="image/tel-bg.jpg">
         <div class="content">
           <div class="author">WIDE VIEW</div>
           <div class="title">DESIGN SLIDER</div>
@@ -84,7 +71,7 @@
         </div>
       </div>
       <div class="item">
-        <img src="image/img3.jpg">
+        <img src="image/tigo-bg.jpg">
         <div class="content">
           <div class="author">ELEPHANT</div>
           <div class="title">DESIGN SLIDER</div>
@@ -123,17 +110,15 @@
         </div>
       </div>
       <div class="item">
-        <img class="thumb-img" src="image/img2.jpg">
+        <img class="thumb-img" src="image/tel-bg.jpg">
         <div class="content">
-          <div class="title">Name Slider</div>
-          <div class="description">Description</div>
+          <div class="title">Telecel</div>
         </div>
       </div>
       <div class="item">
-        <img class="thumb-img" src="image/img3.jpg">
+        <img class="thumb-img" src="image/tigo-bg.jpg">
         <div class="content">
-          <div class="title">Name Slider</div>
-          <div class="description">Description</div>
+          <div class="title">AirtelTigo</div>
         </div>
       </div>
       <div class="item">
@@ -147,8 +132,8 @@
     <!-- arrows and slide buttons -->
     <div class="arrows">
       <button class="slide-btn" data-index="0">MTN</button>
-      <button class="slide-btn"  data-index="1">AirtelTigo</button>
-      <button class="slide-btn" data-index="2">Telecel</button>
+      <button class="slide-btn"  data-index="1">Telecel</button>
+      <button class="slide-btn" data-index="2">AirtelTigo</button>
       <button class="slide-btn" data-index="3">AFA Bundle</button>
     </div>
   </div>
