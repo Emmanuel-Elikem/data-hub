@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Data Purchase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            padding: 32px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a4a4a;
+            font-weight: 500;
+        }
+
+        .phone-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .phone-input:focus {
+            outline: none;
+            border-color: #0066ff;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .package-selector {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .selected-package {
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .package-options {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-top: 8px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            z-index: 1;
+        }
+
+        .package-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .package-option:hover {
+            background: #f5f7fb;
+        }
+
+        .price-display {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .summary {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            display: none;
+        }
+
+        .summary-item {
+            margin-bottom: 8px;
+            color: #4a4a4a;
+        }
+
+        .steps {
+            list-style: none;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: #f8f9ff;
+            border-radius: 8px;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: #0066ff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .invalid {
+            border-color: #ff4444 !important;
+        }
+
+        .visible {
+            display: block !important;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 24px;
+            }
+            
+            .title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title"><i class="fas fa-mobile-alt"></i>Buy Mobile Data</h1>
+        
+        <div class="input-group">
+            <label class="input-label">Mobile Number</label>
+            <input type="tel" class="phone-input" placeholder="024 123 4567">
+            <div class="error-message">Please enter a valid phone number</div>
+        </div>
+
+        <div class="package-selector">
+            <label class="input-label">Select Data Package</label>
+            <div class="selected-package" onclick="togglePackageOptions()">
+                <span>Choose package</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="package-options">
+                <div class="package-option" data-price="5" data-size="1 GB">1 GB - GHS 5.00</div>
+                <div class="package-option" data-price="9" data-size="2 GB">2 GB - GHS 9.00</div>
+                <div class="package-option" data-price="13" data-size="3 GB">3 GB - GHS 13.00</div>
+                <div class="package-option" data-price="18" data-size="5 GB">5 GB - GHS 18.00</div>
+            </div>
+        </div>
+
+        <div class="price-display">Total: GHS <span id="price">0.00</span></div>
+
+        <div class="summary">
+            <div class="summary-item"><strong>Number:</strong> <span id="summary-number"></span></div>
+            <div class="summary-item"><strong>Package:</strong> <span id="summary-package"></span></div>
+            <div class="summary-item"><strong>Total:</strong> GHS <span id="summary-price"></span></div>
+        </div>
+
+        <ul class="steps">
+            <li class="step">
+                <div class="step-number">1</div>
+                <div>Enter your mobile number and select package</div>
+            </li>
+            <li class="step">
+                <div class="step-number">2</div>
+                <div>Review your purchase summary</div>
+            </li>
+            <li class="step">
+                <div class="step-number">3</div>
+                <div>Complete payment via Paystack</div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const phoneInput = document.querySelector('.phone-input');
+        const packageOptions = document.querySelector('.package-options');
+        const priceDisplay = document.getElementById('price');
+        const summary = document.querySelector('.summary');
+        const errorMessage = document.querySelector('.error-message');
+
+        const networks = {
+            mtn: ['024', '054', '055', '025', '053'],
+            airtelTigo: ['027', '057', '026', '056'],
+            telecel: ['020', '050']
+        };
+
+        function validatePhoneNumber(number) {
+            const prefix = number.substring(0, 3);
+            return Object.values(networks).flat().includes(prefix);
+        }
+
+        function togglePackageOptions() {
+            packageOptions.style.maxHeight = packageOptions.style.maxHeight ? 
+                null : `${packageOptions.scrollHeight}px`;
+        }
+
+        function selectPackage(option) {
+            const price = option.getAttribute('data-price');
+            const size = option.getAttribute('data-size');
+            document.querySelector('.selected-package span').textContent = `${size} - GHS ${price}.00`;
+            priceDisplay.textContent = `${price}.00`;
+            updateSummary();
+            togglePackageOptions();
+        }
+
+        function updateSummary() {
+            if (validatePhoneNumber(phoneInput.value)) {
+                summary.style.display = 'block';
+                document.getElementById('summary-number').textContent = phoneInput.value;
+                document.getElementById('summary-package').textContent = 
+                    document.querySelector('.selected-package span').textContent;
+                document.getElementById('summary-price').textContent = priceDisplay.textContent;
+            }
+        }
+
+        // Event Listeners
+        phoneInput.addEventListener('input', function(e) {
+            const isValid = validatePhoneNumber(e.target.value);
+            errorMessage.style.display = isValid ? 'none' : 'block';
+            e.target.classList.toggle('invalid', !isValid);
+            updateSummary();
+        });
+
+        document.querySelectorAll('.package-option').forEach(option => {
+            option.addEventListener('click', () => selectPackage(option));
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.package-selector')) {
+                packageOptions.style.maxHeight = null;
+            }
+        });
+    </script>
+</body>
+</html>

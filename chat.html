@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discounted Mobile Data Purchase</title>
+  <style>
+    /* Global styles */
+    body {
+      background: #f4f6f8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 480px;
+      width: 90%;
+      padding: 2rem;
+      margin: 1rem;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #555;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    input[type="text"].error {
+      border-color: #e74c3c;
+    }
+    .error-message {
+      color: #e74c3c;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+    /* Custom dropdown styles */
+    .dropdown {
+      position: relative;
+      user-select: none;
+    }
+    .dropdown-selected {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #fff;
+    }
+    .dropdown-selected:after {
+      content: '▼';
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      color: #888;
+    }
+    .dropdown-list {
+      position: absolute;
+      top: calc(100% + 5px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      z-index: 10;
+      max-height: 150px;
+      overflow-y: auto;
+      display: none;
+    }
+    .dropdown-item {
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .dropdown-item:hover {
+      background: #f4f6f8;
+    }
+    /* Summary styles */
+    .summary {
+      background: #f9f9f9;
+      padding: 1rem;
+      border-radius: 4px;
+      border: 1px solid #e1e1e1;
+      margin-bottom: 1.5rem;
+    }
+    .summary h3 {
+      margin-top: 0;
+      color: #333;
+    }
+    /* Steps styles */
+    .steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .steps li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .steps li:last-child {
+      margin-bottom: 0;
+    }
+    .step-icon {
+      font-size: 1.5rem;
+      margin-right: 0.75rem;
+      color: #3498db;
+      width: 30px;
+      text-align: center;
+    }
+    /* Responsive design */
+    @media (max-width: 480px) {
+      .card {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Purchase Mobile Data</h1>
+    <!-- Mobile Number Input -->
+    <div class="form-group">
+      <label for="phone">Mobile Number</label>
+      <input type="text" id="phone" placeholder="e.g., 0241234567" />
+      <div class="error-message" id="phone-error">Please enter a valid MTN, AirtelTigo, or Telecel number.</div>
+    </div>
+    
+    <!-- Data Package Selection -->
+    <div class="form-group">
+      <label for="package">Select Data Package</label>
+      <div class="dropdown" id="dropdown">
+        <div class="dropdown-selected" id="dropdown-selected">Choose Package</div>
+        <div class="dropdown-list" id="dropdown-list">
+          <!-- Dummy packages -->
+          <div class="dropdown-item" data-package="1GB" data-price="5.00">1 GB – GHS 5.00</div>
+          <div class="dropdown-item" data-package="2GB" data-price="9.00">2 GB – GHS 9.00</div>
+          <div class="dropdown-item" data-package="3GB" data-price="12.00">3 GB – GHS 12.00</div>
+          <div class="dropdown-item" data-package="5GB" data-price="18.00">5 GB – GHS 18.00</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Dynamic Price Display -->
+    <div class="form-group">
+      <label>Price</label>
+      <div id="price-display" style="font-size: 1.2rem; font-weight: bold; color: #27ae60;">GHS 0.00</div>
+    </div>
+    
+    <!-- Purchase Summary -->
+    <div class="summary" id="summary">
+      <h3>Purchase Summary</h3>
+      <p><strong>Mobile Number:</strong> <span id="summary-phone">N/A</span></p>
+      <p><strong>Data Package:</strong> <span id="summary-package">N/A</span></p>
+      <p><strong>Final Price:</strong> <span id="summary-price">GHS 0.00</span></p>
+    </div>
+    
+    <!-- Steps to Complete Payment -->
+    <div class="form-group">
+      <h3>Steps to Complete Payment</h3>
+      <ul class="steps">
+        <li><span class="step-icon">📞</span>Enter your mobile number</li>
+        <li><span class="step-icon">📶</span>Select your desired data package</li>
+        <li><span class="step-icon">💳</span>Click the Pay button</li>
+        <li><span class="step-icon">✅</span>Complete payment using Paystack</li>
+      </ul>
+    </div>
+    
+    <!-- Purchase Button -->
+    <div class="form-group">
+      <button id="pay-button" style="width: 100%; padding: 0.75rem; background: #3498db; color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer;">
+        Pay Now
+      </button>
+    </div>
+  </div>
+  
+  <script>
+    // Package data
+    const packages = {
+      "1GB": "5.00",
+      "2GB": "9.00",
+      "3GB": "12.00",
+      "5GB": "18.00"
+    };
+
+    // Phone validation prefixes for each operator
+    const validPrefixes = {
+      "MTN": ["024", "054", "055", "025", "053"],
+      "AirtelTigo": ["027", "057", "026", "056"],
+      "Telecel": ["020", "050"]
+    };
+
+    // DOM Elements
+    const phoneInput = document.getElementById('phone');
+    const phoneError = document.getElementById('phone-error');
+    const dropdown = document.getElementById('dropdown');
+    const dropdownSelected = document.getElementById('dropdown-selected');
+    const dropdownList = document.getElementById('dropdown-list');
+    const priceDisplay = document.getElementById('price-display');
+    const summaryPhone = document.getElementById('summary-phone');
+    const summaryPackage = document.getElementById('summary-package');
+    const summaryPrice = document.getElementById('summary-price');
+    const payButton = document.getElementById('pay-button');
+
+    let selectedPackage = null;
+    let selectedPrice = "0.00";
+
+    // Dropdown toggle
+    dropdownSelected.addEventListener('click', () => {
+      dropdownList.style.display = dropdownList.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener('click', function(event) {
+      if (!dropdown.contains(event.target)) {
+        dropdownList.style.display = 'none';
+      }
+    });
+
+    // Dropdown item selection
+    const items = document.querySelectorAll('.dropdown-item');
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        selectedPackage = item.getAttribute('data-package');
+        selectedPrice = item.getAttribute('data-price');
+        dropdownSelected.textContent = item.textContent;
+        priceDisplay.textContent = `GHS ${selectedPrice}`;
+        updateSummary();
+        dropdownList.style.display = 'none';
+      });
+    });
+
+    // Update summary function
+    function updateSummary() {
+      summaryPhone.textContent = phoneInput.value.trim() || "N/A";
+      summaryPackage.textContent = selectedPackage || "N/A";
+      summaryPrice.textContent = `GHS ${selectedPrice}`;
+    }
+
+    // Phone number validation function
+    function validatePhoneNumber(number) {
+      // Remove any spaces
+      const num = number.trim();
+      if(num.length < 10) return false;
+      // Check if number starts with any valid prefix
+      const prefix = num.substring(0, 3);
+      let isValid = false;
+      for (const operator in validPrefixes) {
+        if(validPrefixes[operator].includes(prefix)) {
+          isValid = true;
+          break;
+        }
+      }
+      return isValid;
+    }
+
+    // Validate phone on blur and update summary if valid
+    phoneInput.addEventListener('blur', () => {
+      const isValid = validatePhoneNumber(phoneInput.value);
+      if(!isValid) {
+        phoneInput.classList.add('error');
+        phoneError.style.display = 'block';
+      } else {
+        phoneInput.classList.remove('error');
+        phoneError.style.display = 'none';
+      }
+      updateSummary();
+    });
+
+    // Update summary as user types
+    phoneInput.addEventListener('input', updateSummary);
+
+    // Payment button handler (dummy)
+    payButton.addEventListener('click', () => {
+      if (!validatePhoneNumber(phoneInput.value)) {
+        alert("Please enter a valid mobile number.");
+        return;
+      }
+      if (!selectedPackage) {
+        alert("Please select a data package.");
+        return;
+      }
+      // Proceed with payment (integration with Paystack would go here)
+      alert(`Processing payment for ${phoneInput.value} for ${selectedPackage} at GHS ${selectedPrice}.`);
+    });
+  </script>
+</body>
+</html>
