@@ -1,10 +1,6 @@
 let carouselDom = document.querySelector('.carousel');
 let SliderDom = carouselDom.querySelector('.carousel .list');
 let thumbnailBorderDom = document.querySelector('.carousel .thumbnail');
-let thumbnailItemsDom = thumbnailBorderDom.querySelectorAll('.item');
-
-// Remove initial thumbnail reordering (delete this line)
-// thumbnailBorderDom.appendChild(thumbnailItemsDom[0]); 
 
 document.querySelectorAll('.slide-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
@@ -33,34 +29,37 @@ document.querySelectorAll('.slide-btn').forEach(btn => {
         for(let i = 0; i < steps; i++) {
             await new Promise(resolve => {
                 showSlider(direction);
-                setTimeout(resolve, 300); // Wait for animation
+                setTimeout(resolve, 300);
             });
         }
     });
 });
 
 function getCurrentSlideIndex() {
-    const activeSlideImg = SliderDom.querySelector('.item:first-child img').src;
-    return Array.from(thumbnailItemsDom).findIndex(
-        thumb => thumb.querySelector('img').src === activeSlideImg
-    );
+    return Array.from(SliderDom.querySelectorAll('.item'))
+               .indexOf(SliderDom.querySelector('.item:first-child'));
 }
 
 function showSlider(type) {
-    let SliderItemsDom = SliderDom.querySelectorAll('.item');
-    let thumbnailItemsDom = document.querySelectorAll('.thumbnail .item');
-    
+    // 1. Move slides
+    let slides = SliderDom.querySelectorAll('.item');
     if(type === 'next') {
-        SliderDom.appendChild(SliderItemsDom[0]);
-        thumbnailBorderDom.appendChild(thumbnailItemsDom[0]);
-        carouselDom.classList.add('next');
+        SliderDom.appendChild(slides[0]);
     } else {
-        SliderDom.prepend(SliderItemsDom[SliderItemsDom.length - 1]);
-        thumbnailBorderDom.prepend(thumbnailItemsDom[thumbnailItemsDom.length - 1]);
-        carouselDom.classList.add('prev');
+        SliderDom.prepend(slides[slides.length - 1]);
     }
 
+    // 2. Update thumbnails to match new order
+    const newActiveSlideIndex = getCurrentSlideIndex();
+    const thumbnails = thumbnailBorderDom.querySelectorAll('.item');
+    const activeThumbnail = thumbnails[newActiveSlideIndex];
+    
+    // Move active thumbnail to end
+    thumbnailBorderDom.appendChild(activeThumbnail);
+
+    // 3. Trigger animations
+    carouselDom.classList.add(type);
     setTimeout(() => {
-        carouselDom.classList.remove('next', 'prev');
+        carouselDom.classList.remove(type);
     }, 300);
 }
